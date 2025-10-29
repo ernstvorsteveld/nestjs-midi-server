@@ -28,6 +28,7 @@
     "axios": "^1.12.2",
     "got": "^14.6.0",
     "https": "^1.0.0",
+    "JSON": "^1.0.0",
     "midi": "^2.0.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
@@ -46,7 +47,7 @@
     "@types/express": "^5.0.0",
     "@types/jest": "^29.5.14",
     "@types/midi": "^2.0.3",
-    "@types/node": "^22.10.7",
+    "@types/node": "^22.18.12",
     "@types/supertest": "^6.0.2",
     "eslint": "^9.18.0",
     "eslint-config-prettier": "^10.0.1",
@@ -69,7 +70,7 @@
       "json",
       "ts"
     ],
-    "rootDir": "src",
+    "rootDir": ".",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
@@ -79,6 +80,9 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node",
-    "setupFiles": []
+    "setupFiles": [],
+    "modulePaths": [
+      "<rootDir>"
+    ]
   }
 }
