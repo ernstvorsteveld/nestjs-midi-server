@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ConfigModule } from '@nestjs/config';
-import { LightsFacadeHue } from './hue.facade';
+import { LightsFacadeHue } from './hue.facade.hue';
 import { Device } from 'src/domain/model/device.model';
 import { LightState } from './hue.model';
 

@@ -5,7 +5,7 @@ import { OnOffCommand } from 'src/domain/model/state.commands';
  *
  * @property {OnOffCommand} command: the command containing the id of the button that was pressed.
  */
-
+export const LightOnOffUseCase = Symbol('LightOnOffUseCase');
 export interface LightOnOffUseCase {
-  execute(command: OnOffCommand): void;
+  execute(command: OnOffCommand): Promise<void>;
 }

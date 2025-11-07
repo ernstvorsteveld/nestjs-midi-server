@@ -1,4 +1,5 @@
 import {
+  Inject,
   Injectable,
   Logger,
   OnModuleDestroy,
@@ -63,11 +64,12 @@ export class MidiDecoder {
 export class MidiService0 implements OnModuleInit, OnModuleDestroy {
   private readonly logger = new Logger(MidiService0.name);
   private readonly midiInput = new MidiInput();
-
-  constructor(private readonly midiMessageDecoder: MidiDecoder) {}
-
-  // An RxJS Subject to stream MIDI messages to subscribers
   public readonly message$ = new Subject<MidiMessage>();
+
+  constructor(
+    @Inject(MidiDecoder)
+    private readonly midiMessageDecoder: MidiDecoder,
+  ) {}
 
   onModuleInit() {
     this.initializeMidi();
@@ -81,6 +83,7 @@ export class MidiService0 implements OnModuleInit, OnModuleDestroy {
   private initializeMidi() {
     const portCount = this.midiInput.getPortCount();
     this.logger.debug('Number of ports found: ' + portCount);
+
     if (portCount === 0) {
       this.logger.warn('No MIDI input devices found!');
       return;
@@ -89,17 +92,12 @@ export class MidiService0 implements OnModuleInit, OnModuleDestroy {
     const deviceName = this.midiInput.getPortName(0);
     this.logger.log(`Found MIDI Device: ${deviceName}. Opening port 0.`);
 
-    // Listen for MIDI messages
     this.midiInput.on('message', (deltaTime, message) => {
-      // The message is an array of numbers [status, data1, data2]
       const decodedMessage = this.midiMessageDecoder.decodeMessage(message);
       this.logger.verbose(`MIDI Message: ${JSON.stringify(decodedMessage)}`);
-
-      // Push the decoded message to our RxJS stream
       this.message$.next(decodedMessage);
     });
 
-    // Open the first available MIDI port.
     this.midiInput.openPort(0);
   }
 }
@@ -108,11 +106,11 @@ export class MidiService0 implements OnModuleInit, OnModuleDestroy {
 export class MidiService1 implements OnModuleInit, OnModuleDestroy {
   private readonly logger = new Logger(MidiService0.name);
   private readonly midiInput = new MidiInput();
-
-  constructor(private readonly midiMessageDecoder: MidiDecoder) {}
-
-  // An RxJS Subject to stream MIDI messages to subscribers
   public readonly message$ = new Subject<MidiMessage>();
+
+  constructor(
+    @Inject(MidiDecoder) private readonly midiMessageDecoder: MidiDecoder,
+  ) {}
 
   onModuleInit() {
     this.initializeMidi();
@@ -133,17 +131,12 @@ export class MidiService1 implements OnModuleInit, OnModuleDestroy {
     const deviceName = this.midiInput.getPortName(1);
     this.logger.log(`Found MIDI Device: ${deviceName}. Opening port 0.`);
 
-    // Listen for MIDI messages
     this.midiInput.on('message', (deltaTime, message) => {
-      // The message is an array of numbers [status, data1, data2]
       const decodedMessage = this.midiMessageDecoder.decodeMessage(message);
       this.logger.verbose(`MIDI Message: ${JSON.stringify(decodedMessage)}`);
-
-      // Push the decoded message to our RxJS stream
       this.message$.next(decodedMessage);
     });
 
-    // Open the first available MIDI port.
     this.midiInput.openPort(1);
   }
 }

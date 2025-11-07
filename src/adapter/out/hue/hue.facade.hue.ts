@@ -1,25 +1,25 @@
-import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { Inject, Injectable } from '@nestjs/common';
 import axios, { AxiosRequestConfig } from 'axios';
 import { Device } from 'src/domain/model/device.model';
-import { LightsFacade } from 'src/port/out/lights/lights.facade';
 import { HueApiResponse, HuePowerupOn, LightState } from './hue.model';
+import { ConfigurationService } from 'src/util/config.service';
+import { LightsPort } from 'src/port/out/lights/lights.port';
 
 @Injectable()
-export class LightsFacadeHue implements LightsFacade {
-  private readonly hueBridgeUrl: string;
+export class LightsFacadeHue implements LightsPort {
   private readonly config: AxiosRequestConfig;
+  private readonly configurationService: ConfigurationService;
 
-  constructor(configService: ConfigService) {
-    this.hueBridgeUrl = configService.get<string>('HUE_BRIDGE_HOST', 'foutje');
+  constructor(
+    @Inject(ConfigurationService)
+    configurationService: ConfigurationService,
+  ) {
+    this.configurationService = configurationService;
 
     this.config = {
       headers: {
         'Content-Type': 'application/json',
-        'hue-application-key': configService.get<string>(
-          'HUE_APPLICATION_KEY',
-          '',
-        ),
+        'hue-application-key': configurationService.hueAuthnkey(),
       },
     };
   }
@@ -29,7 +29,7 @@ export class LightsFacadeHue implements LightsFacade {
     const newState =
       currentState === LightState.ON ? LightState.OFF : LightState.ON;
 
-    const uri = `${this.hueBridgeUrl}/clip/v2/resource/light/${device.deviceId}`;
+    const uri = `${this.configurationService.hueHost()}/clip/v2/resource/light/${device.deviceId}`;
     const body: HuePowerupOn = {
       on: {
         on: newState === LightState.ON,
@@ -46,7 +46,7 @@ export class LightsFacadeHue implements LightsFacade {
   }
 
   async getState(id: string): Promise<LightState> {
-    const uri = `${this.hueBridgeUrl}/clip/v2/resource/light/${id}`;
+    const uri = `${this.configurationService.hueHost()}/clip/v2/resource/light/${id}`;
     const response = await axios.get(uri, this.config);
     if (response === undefined || response.status !== 200) {
       return LightState.OFF;
