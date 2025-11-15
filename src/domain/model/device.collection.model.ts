@@ -1,6 +1,8 @@
 import { Device } from './device.model';
 
 export class DeviceCollection {
+  public static DEVICE_COLLECTION: DeviceCollection;
+
   private devices: Device[];
 
   constructor(devices: Device[]) {
@@ -15,7 +17,7 @@ export class DeviceCollection {
     return result;
   }
 
-  get(): Device[] {
+  getAll(): Device[] {
     return this.devices;
   }
 }

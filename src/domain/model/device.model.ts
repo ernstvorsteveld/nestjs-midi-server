@@ -1,10 +1,8 @@
 export class Device {
-  commandId: string;
   deviceId: string;
   name: string;
 
-  constructor(commandId: string, deviceId: string, name: string) {
-    this.commandId = commandId;
+  constructor(deviceId: string, name: string) {
     this.deviceId = deviceId;
     this.name = name;
   }

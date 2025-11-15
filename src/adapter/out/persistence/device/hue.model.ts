@@ -1,9 +1,9 @@
-export interface ServiceDto {
+export interface HueServiceDto {
   rid: string;
   rtype: string;
 }
 
-export interface ProductDataDto {
+export interface HueProductDataDto {
   model_id: string;
   manufacturer_name: string;
   product_name: string;
@@ -13,36 +13,36 @@ export interface ProductDataDto {
   hardware_platform_type?: string;
 }
 
-export interface MetadataDto {
+export interface HueMetadataDto {
   name: string;
   archetype: string;
 }
 
-export type IdentifyDto = unknown;
+export type HueIdentifyDto = unknown;
 
-export interface UserTestDto {
+export interface HueUserTestDto {
   status: string;
   usertest: boolean;
 }
 
-export interface DeviceDto {
+export interface HueDeviceDto {
   id: string;
   id_v1?: string;
-  product_data: ProductDataDto;
-  metadata: MetadataDto;
-  identify?: IdentifyDto;
-  usertest?: UserTestDto;
-  services: ServiceDto[];
+  product_data: HueProductDataDto;
+  metadata: HueMetadataDto;
+  identify?: HueIdentifyDto;
+  usertest?: HueUserTestDto;
+  services: HueServiceDto[];
   type: string;
 }
 
 export interface HueDevicesResponse {
   errors: any[];
-  data: DeviceDto[];
+  data: HueDeviceDto[];
 }
 
 export class HueDevice {
-  constructor(public device: DeviceDto) {}
+  constructor(public device: HueDeviceDto) {}
 
   get name(): string {
     return this.device.metadata.name;
@@ -85,7 +85,7 @@ export class HueDevice {
     return this.device.services.some((s) => s.rtype === serviceType);
   }
 
-  getServices(serviceType?: string): ServiceDto[] {
+  getServices(serviceType?: string): HueServiceDto[] {
     if (serviceType) {
       return this.device.services.filter((s) => s.rtype === serviceType);
     }

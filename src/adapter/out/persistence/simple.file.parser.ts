@@ -1,5 +1,5 @@
 import * as fs from 'fs/promises';
-import { HueDevice, HueDevicesResponse } from './device.model';
+import { HueDevice, HueDevicesResponse } from './device/hue.model';
 
 export class SimpleFileParser {
   private devices: HueDevice[] = [];
