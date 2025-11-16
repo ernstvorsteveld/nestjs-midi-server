@@ -10,7 +10,6 @@ import { DeviceRepository } from './port/out/persistence/device.repository';
 import { ConfigurationService } from './util/config.service';
 import { ConfigurationServiceImpl } from './util/config.service.impl';
 import { DeviceRepositoryLocal } from './adapter/out/persistence/device/device.repository.local';
-import { CommandDeviceCollectionInitializer } from './domain/service/command.device.collection.service';
 import { CommandRepositoryLocal } from './adapter/out/persistence/command/command.repository.local';
 import { CommandRepository } from './port/out/persistence/command.repository';
 
@@ -24,7 +23,6 @@ import { CommandRepository } from './port/out/persistence/command.repository';
   providers: [
     { provide: ConfigurationService, useClass: ConfigurationServiceImpl },
     AppService,
-    CommandDeviceCollectionInitializer,
     { provide: LightOnOffUseCase, useClass: LightOnOffService },
     { provide: LightsPort, useClass: LightsFacadeHue },
     { provide: DeviceRepository, useClass: DeviceRepositoryLocal },

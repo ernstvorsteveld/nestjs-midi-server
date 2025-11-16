@@ -7,12 +7,14 @@ import { LightsFacadeMock } from 'src/adapter/out/hue/hue.facade.mock';
 import { Device } from '../model/device.model';
 import { LightState } from 'src/adapter/out/hue/hue.model';
 import { DeviceRepository } from 'src/port/out/persistence/device.repository';
-import { DeviceRepositoryLocal } from 'src/adapter/out/persistence/device/device.repository.local';
-import { CommandDeviceCollectionInitializer } from './command.device.collection.service';
-import { CommandRepositoryLocal } from 'src/adapter/out/persistence/command/command.repository.local';
 import { CommandRepository } from 'src/port/out/persistence/command.repository';
+import { CommandDeviceCollection } from '../model/commanddevice.collection.model';
+import {
+  CommandRepositoryMock,
+  DeviceRepositoryMock,
+} from './device.collection.service.mocks';
 
-describe('DeviceRepositoryLocal', () => {
+describe('LightOnOffService', () => {
   let service: LightOnOffService;
   let mock: LightsPort;
   let repository: DeviceRepository;
@@ -20,9 +22,8 @@ describe('DeviceRepositoryLocal', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        { provide: DeviceRepository, useClass: DeviceRepositoryLocal },
-        { provide: CommandRepository, useClass: CommandRepositoryLocal },
-        CommandDeviceCollectionInitializer,
+        { provide: DeviceRepository, useClass: DeviceRepositoryMock },
+        { provide: CommandRepository, useClass: CommandRepositoryMock },
         { provide: LightsPort, useClass: LightsFacadeMock },
         LightOnOffService,
       ],
@@ -46,13 +47,17 @@ describe('DeviceRepositoryLocal', () => {
     expect(repository).toBeDefined();
   });
 
+  it('Should hava a objects in CommnadDeviceCollection', () => {
+    expect(CommandDeviceCollection.get().get()).toHaveLength(3);
+  });
+
   it('Should select correct device based upon command', async () => {
     const onOffCommand: OnOffCommand = {
-      buttonId: 'fds',
+      buttonId: '3',
     };
     (mock as LightsFacadeMock).setLightState(LightState.ON);
     await service.execute(onOffCommand);
     const device: Device = (mock as LightsFacadeMock).getCalledWith();
-    expect(device.deviceId).toHaveLength(20);
+    expect(device.deviceId).toBe('3');
   });
 });

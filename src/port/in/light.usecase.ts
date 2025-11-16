@@ -1,3 +1,4 @@
+import { OnModuleInit } from '@nestjs/common';
 import { OnOffCommand } from 'src/domain/model/state.commands';
 
 /**

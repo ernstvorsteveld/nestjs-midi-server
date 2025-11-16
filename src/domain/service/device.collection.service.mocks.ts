@@ -6,8 +6,10 @@ import { Device } from '../model/device.model';
 import { Command } from '../model/command.model';
 
 export class DeviceRepositoryMock implements DeviceRepository {
-  getAll(): DeviceCollection {
-    return new DeviceCollection(<Device[]>[
+  onModuleInit() {}
+
+  public constructor() {
+    new DeviceCollection(<Device[]>[
       {
         deviceId: '1',
         name: 'name1',
@@ -22,11 +24,14 @@ export class DeviceRepositoryMock implements DeviceRepository {
       },
     ]);
   }
+  getAll(): DeviceCollection {
+    return DeviceCollection.get();
+  }
 }
 
 export class CommandRepositoryMock implements CommandRepository {
-  getAll(): CommandCollection {
-    return new CommandCollection(<Command[]>[
+  constructor() {
+    new CommandCollection(<Command[]>[
       {
         commandId: '1',
         name: 'name1',
@@ -40,5 +45,8 @@ export class CommandRepositoryMock implements CommandRepository {
         name: 'name3',
       },
     ]);
+  }
+  getAll(): CommandCollection {
+    return CommandCollection.get();
   }
 }

@@ -8,11 +8,8 @@ export class DeviceRepositoryLocal
   extends AbstractDeviceRepositoryLocal
   implements DeviceRepository, OnModuleInit
 {
-  private devices: DeviceCollection;
-
   constructor() {
     super();
-    this.devices = new DeviceCollection([]);
   }
 
   async onModuleInit() {
@@ -23,11 +20,11 @@ export class DeviceRepositoryLocal
       name: device.name,
     }));
 
-    this.devices = new DeviceCollection(loadedDevices);
-    console.log('Devices loaded: ', this.devices);
+    new DeviceCollection(loadedDevices);
+    console.log('Devices loaded: ', DeviceCollection.get());
   }
 
   public getAll(): DeviceCollection {
-    return this.devices;
+    return DeviceCollection.get();
   }
 }

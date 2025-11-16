@@ -9,20 +9,19 @@ export class CommandRepositoryLocal
   extends AbstractCommandRepositoryLocal
   implements CommandRepository
 {
-  private commandCollection: CommandCollection;
-
   constructor() {
     super();
     const commandsCollection: CommandCollectionDto = this.loadCommands();
-    this.commandCollection = new CommandCollection(
+    new CommandCollection(
       commandsCollection.commands.map((d) => ({
         commandId: d.commandId,
         name: d.name,
       })),
     );
+    console.log('Commands loaded: ', CommandCollection.get());
   }
 
   public getAll(): CommandCollection {
-    return this.commandCollection;
+    return CommandCollection.get();
   }
 }

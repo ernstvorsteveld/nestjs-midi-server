@@ -1,12 +1,17 @@
 import { Device } from './device.model';
 
 export class DeviceCollection {
-  public static DEVICE_COLLECTION: DeviceCollection;
+  private static INSTANCE: DeviceCollection;
 
   private devices: Device[];
 
   constructor(devices: Device[]) {
     this.devices = devices;
+    DeviceCollection.INSTANCE = this;
+  }
+
+  public static get(): DeviceCollection {
+    return DeviceCollection.INSTANCE;
   }
 
   findById(deviceId: string): Device {
