@@ -14,6 +14,12 @@ describe('ConfigurationServiceImpl', () => {
       imports: [
         ConfigModule.forRoot({
           isGlobal: true,
+          load: [
+            () => ({
+              HUE_BRIDGE_HOST: '192.168.1.100       ', // 20 chars
+              HUE_APPLICATION_KEY: '1234567890123456789012345678901234567890', // 40 chars
+            }),
+          ],
         }),
       ],
     }).compile();
