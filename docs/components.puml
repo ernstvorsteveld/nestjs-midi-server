@@ -1,0 +1,28 @@
+@startuml "components"
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+AddRelTag("sync", $textColor="black", $lineColor="black", $lineStyle = DashedLine())
+
+LAYOUT_WITH_LEGEND()
+
+title Midi controller message handler - Component Diagram
+
+
+System_Boundary(MidiSystem, "Midi Message Handler System") {
+    Container(midi, "Midi", "Midi", "Handles incoming Midi messages.") {
+        Component(MidiHandler, "MidiHandler", "Handles order-related endpoints.")
+    }
+    Container(ports, "InPorts", "NestJS", "In ports") {
+        Component(LightOnOffUseCase, "LightOnOffUseCase", "Handles order-related endpoints.")
+    }
+
+    Container(domain, "Domain", "Domain Layer", "Domain layer") {
+        Component(LightOnOffService, "LightOnOffService", "Implements the LightOnOffUseCase.")
+    }
+}
+
+System_Ext(HueBridge, "Hue Bridge", "External Service", "Handles Hue messages")
+
+Rel(MidiHandler, LightOnOffUseCase, "Midi Message", $tags="sync")
+Rel_U(LightOnOffService, LightOnOffUseCase, "Implements", $tags="sync")
+
+@enduml
