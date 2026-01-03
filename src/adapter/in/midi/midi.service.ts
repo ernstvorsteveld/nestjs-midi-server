@@ -6,18 +6,8 @@ import {
   OnModuleInit,
 } from '@nestjs/common';
 import { input as MidiInput } from 'midi';
-import { Subject } from 'rxjs';
-
-// Define a type for our decoded MIDI message for clarity
-export interface MidiMessage {
-  command: string;
-  channel: number;
-  note: number;
-  velocity: number;
-  controller?: number; // For CC messages
-  value?: number; // For CC messages
-  raw: number[];
-}
+import { MidiMessage } from '../midi.message.dto';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable()
 export class MidiDecoder {
@@ -64,11 +54,11 @@ export class MidiDecoder {
 export class MidiService0 implements OnModuleInit, OnModuleDestroy {
   private readonly logger = new Logger(MidiService0.name);
   private readonly midiInput = new MidiInput();
-  public readonly message$ = new Subject<MidiMessage>();
 
   constructor(
     @Inject(MidiDecoder)
     private readonly midiMessageDecoder: MidiDecoder,
+    @Inject() private eventEmitter: EventEmitter2,
   ) {}
 
   onModuleInit() {
@@ -95,7 +85,7 @@ export class MidiService0 implements OnModuleInit, OnModuleDestroy {
     this.midiInput.on('message', (deltaTime, message) => {
       const decodedMessage = this.midiMessageDecoder.decodeMessage(message);
       this.logger.verbose(`MIDI Message: ${JSON.stringify(decodedMessage)}`);
-      this.message$.next(decodedMessage);
+      this.eventEmitter.emit('midi.command', decodedMessage);
     });
 
     this.midiInput.openPort(0);
@@ -106,10 +96,10 @@ export class MidiService0 implements OnModuleInit, OnModuleDestroy {
 export class MidiService1 implements OnModuleInit, OnModuleDestroy {
   private readonly logger = new Logger(MidiService0.name);
   private readonly midiInput = new MidiInput();
-  public readonly message$ = new Subject<MidiMessage>();
 
   constructor(
     @Inject(MidiDecoder) private readonly midiMessageDecoder: MidiDecoder,
+    @Inject() private eventEmitter: EventEmitter2,
   ) {}
 
   onModuleInit() {
@@ -134,7 +124,7 @@ export class MidiService1 implements OnModuleInit, OnModuleDestroy {
     this.midiInput.on('message', (deltaTime, message) => {
       const decodedMessage = this.midiMessageDecoder.decodeMessage(message);
       this.logger.verbose(`MIDI Message: ${JSON.stringify(decodedMessage)}`);
-      this.message$.next(decodedMessage);
+      this.eventEmitter.emit('midi.command', decodedMessage);
     });
 
     this.midiInput.openPort(1);

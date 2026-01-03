@@ -13,6 +13,7 @@ import { DeviceRepositoryLocal } from './adapter/out/persistence/device/device.r
 import { CommandRepositoryLocal } from './adapter/out/persistence/command/command.repository.local';
 import { CommandRepository } from './port/out/persistence/command.repository';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { MidiController } from './adapter/in/http/midi.controller';
 
 @Module({
   imports: [
@@ -21,7 +22,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
     }),
     EventEmitterModule.forRoot(),
   ],
-  controllers: [AppController],
+  controllers: [MidiController],
   providers: [
     { provide: ConfigurationService, useClass: ConfigurationServiceImpl },
     AppService,

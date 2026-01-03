@@ -1,0 +1,11 @@
+services:
+  midi-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nestjs-midi-server
+    ports:
+      - '3010:3000'
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped

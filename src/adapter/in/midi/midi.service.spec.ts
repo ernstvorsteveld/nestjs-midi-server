@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { MidiDecoder, MidiService0, MidiService1 } from './midi.service';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 describe('MidiService', () => {
   let midiService0: MidiService0;
@@ -7,6 +8,7 @@ describe('MidiService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [EventEmitterModule.forRoot()],
       providers: [MidiDecoder, MidiService0, MidiService1],
     }).compile();
 
