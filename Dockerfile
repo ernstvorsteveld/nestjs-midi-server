@@ -1,23 +1,34 @@
-# Use the official Node.js image as the base image
-FROM node:25
+FROM node:23-slim AS builder
 
-# Set the working directory inside the container
 WORKDIR /usr/src/app
 
-# Copy package.json and package-lock.json to the working directory
+# Install build dependencies for the 'midi' package
+# This is necessary because 'midi' contains native C++ code
+RUN apt-get update && apt-get install -y \
+    python3 \
+    make \
+    g++ \
+    libasound2-dev \
+    && rm -rf /var/lib/apt/lists/*
+
 COPY package*.json ./
+COPY tsconfig*.json ./
+COPY nest-cli.json ./
 
-# Install the application dependencies
 RUN npm install
-
-# Copy the rest of the application files
 COPY . .
-
-# Build the NestJS application
 RUN npm run build
 
-# Expose the application port
+# Stage 2: Production environment
+FROM node:23-slim
+
+WORKDIR /usr/src/app
+RUN apt-get update && apt-get install -y \
+    libasound2 \
+    && rm -rf /var/lib/apt/lists/*
+COPY --from=builder /usr/src/app/dist ./dist
+COPY --from=builder /usr/src/app/node_modules ./node_modules
+COPY --from=builder /usr/src/app/package*.json ./
 EXPOSE 3000
 
-# Command to run the application
-CMD ["node", "dist/main"]
+CMD ["npm", "run", "start:prod"]
