@@ -12,12 +12,14 @@ import { ConfigurationServiceImpl } from './util/config.service.impl';
 import { DeviceRepositoryLocal } from './adapter/out/persistence/device/device.repository.local';
 import { CommandRepositoryLocal } from './adapter/out/persistence/command/command.repository.local';
 import { CommandRepository } from './port/out/persistence/command.repository';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    EventEmitterModule.forRoot(),
   ],
   controllers: [AppController],
   providers: [
