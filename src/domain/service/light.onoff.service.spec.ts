@@ -52,7 +52,7 @@ describe('LightOnOffService', () => {
   });
 
   it('Should hava a objects in CommandDeviceCollection', () => {
-    expect(CommandDeviceCollection.get().get()).toHaveLength(23);
+    expect(CommandDeviceCollection.get().get()).toHaveLength(18);
   });
 
   it('Should select correct device based upon command', async () => {

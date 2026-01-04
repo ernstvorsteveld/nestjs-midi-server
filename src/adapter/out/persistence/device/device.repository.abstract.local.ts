@@ -32,9 +32,9 @@ function getDeviceId(d: HueDeviceDto): string {
   if (d === undefined) {
     return 'getDeviceId - unknown';
   }
-  const serviceDto = d.services.find((s) => s.rtype === 'light');
-  if (serviceDto === undefined) {
-    return 'getDeviceId - unknown - 2';
-  }
-  return serviceDto.rid;
+  // const serviceDto = d.services.find((s) => s.rtype === 'light');
+  // if (serviceDto === undefined) {
+  //   return 'getDeviceId - unknown - 2';
+  // }
+  return d.id;
 }

@@ -30,7 +30,7 @@ describe('CommandRepository', () => {
   });
 
   it('should load json file and have the devices', () => {
-    expect(repository.getAll().getAll()).toHaveLength(4);
+    expect(repository.getAll().getAll()).toHaveLength(12);
 
     expect(repository.getAll().getAll()[0].commandId).toBe('1');
   });

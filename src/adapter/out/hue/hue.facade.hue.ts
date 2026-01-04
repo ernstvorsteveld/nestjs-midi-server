@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import axios, { AxiosRequestConfig } from 'axios';
 import { Device } from 'src/domain/model/device.model';
-import { HueApiResponse, HuePowerupOn, LightState } from './hue.model';
+import { HueApiResponse, HueLightUpdatePayload, LightState } from './hue.model';
 import { ConfigurationService } from 'src/util/config.service';
 import { LightsPort } from 'src/port/out/lights/lights.port';
 
@@ -30,7 +30,7 @@ export class LightsFacadeHue implements LightsPort {
       currentState === LightState.ON ? LightState.OFF : LightState.ON;
 
     const uri = `${this.configurationService.hueHost()}/clip/v2/resource/light/${device.deviceId}`;
-    const body: HuePowerupOn = {
+    const body: HueLightUpdatePayload = {
       on: {
         on: newState === LightState.ON,
       },

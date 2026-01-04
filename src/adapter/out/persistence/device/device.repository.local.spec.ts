@@ -30,9 +30,9 @@ describe('DeviceRepository', () => {
   });
 
   it('should load json file and have the devices', () => {
-    expect(repository.getAll().getAll()).toHaveLength(23);
+    expect(repository.getAll().getAll()).toHaveLength(18);
     expect(repository.getAll().getAll()[0].deviceId).toBe(
-      'getDeviceId - unknown - 2',
+      '0018a92e-ba65-4ea3-8abf-91043a1f4b1c',
     );
   });
 

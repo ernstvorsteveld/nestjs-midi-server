@@ -26,76 +26,82 @@ export enum LightState {
   OFF,
 }
 
-/**
- * A generic identifier for a resource (e.g., a device)
- */
 export type HueResourceIdentifier = {
   rid: string;
   rtype: string;
 };
 
-/**
- * Metadata for the light
- */
 export type HueLightMetadata = {
   name: string;
   archetype: string;
-  fixed_mired: number;
+  fixed_mired?: number;
   function: string;
 };
 
-/**
- * On/off state of the light
- */
-export type HueLightOn = {
+export type HueProductData = {
+  function: string;
+};
+
+export type HueOnStatus = {
   on: boolean;
 };
 
-/**
- * Dimming properties of the light
- */
-export type HueLightDimming = {
+export type HueDimmingStatus = {
   brightness: number;
-  min_dim_level: number;
+  min_dim_level?: number;
 };
 
-/**
- * Dynamic scene properties
- */
-export type HueLightDynamics = {
+export type HueColorTemperature = {
+  mirek: number | null;
+  mirek_valid: boolean;
+  mirek_schema: {
+    mirek_minimum: number;
+    mirek_maximum: number;
+  };
+};
+
+export type HueColorXY = {
+  x: number;
+  y: number;
+};
+
+export type HueColorGamutPoint = {
+  x: number;
+  y: number;
+};
+
+export type HueColor = {
+  xy: HueColorXY;
+  gamut?: {
+    red: HueColorGamutPoint;
+    green: HueColorGamutPoint;
+    blue: HueColorGamutPoint;
+  };
+  gamut_type: string;
+};
+
+export type HueDynamics = {
   status: string;
   status_values: string[];
   speed: number;
   speed_valid: boolean;
 };
 
-/**
- * Alert effect properties
- */
-export type HueLightAlert = {
+export type HueAlert = {
   action_values: string[];
 };
 
-/**
- * Signaling properties
- */
-export type HueLightSignaling = {
-  signal_values: string[];
+export type HueSignaling = {
+  signal_values?: string[];
 };
 
-/**
- * V1 effects properties
- */
-export type HueLightEffects = {
-  status_values: string[];
+export type HueEffects = {
   status: string;
+  status_values: string[];
   effect_values: string[];
 };
 
-/**
- * V2 effects properties
- */
-export type HueLightEffectsV2 = {
+export type HueEffectsV2 = {
   action: {
     effect_values: string[];
   };
@@ -105,38 +111,35 @@ export type HueLightEffectsV2 = {
   };
 };
 
-/**
- * Power-on behavior for the light's on-state
- */
-export type HuePowerupOn = {
-  mode?: string;
-  on: {
-    on: boolean;
-  };
+export type HueTimedEffects = {
+  status: string;
+  status_values: string[];
+  effect_values: string[];
 };
 
-/**
- * Power-on behavior for the light's dimming state
- */
-export type HuePowerupDimming = {
-  mode: string;
-  dimming: {
-    brightness: number;
-  };
-};
-
-/**
- * Power-on behavior configuration
- */
-export type HueLightPowerup = {
+export type HuePowerUp = {
   preset: string;
   configured: boolean;
-  on: HuePowerupOn;
-  dimming: HuePowerupDimming;
+  on: {
+    mode: string;
+    on: HueOnStatus;
+  };
+  dimming?: {
+    mode: string;
+    dimming: {
+      brightness: number;
+    };
+  };
+  color?: {
+    mode: string;
+    color_temperature?: {
+      mirek: number;
+    };
+  };
 };
 
 /**
- * Represents a single light resource from the Hue API
+ * Main Hue Light Resource
  */
 export type HueLight = {
   id: string;
@@ -144,84 +147,57 @@ export type HueLight = {
   owner: HueResourceIdentifier;
   metadata: HueLightMetadata;
   product_data: HueProductData;
-  identify: Record<string, never>; // Empty object
+  identify: Record<string, never>;
   service_id: number;
-  on: HueLightOn;
-  dimming: HueLightDimming;
-  dimming_delta: Record<string, never>; // Empty object
-  dynamics: HueLightDynamics;
-  alert: HueLightAlert;
-  signaling: HueLightSignaling;
+  on: HueOnStatus;
+  dimming?: HueDimmingStatus;
+  dimming_delta?: Record<string, never>;
+  color_temperature?: HueColorTemperature;
+  color_temperature_delta?: Record<string, never>;
+  color?: HueColor;
+  dynamics: HueDynamics;
+  alert: HueAlert;
+  signaling?: HueSignaling;
   mode: string;
-  effects: HueLightEffects;
-  effects_v2: HueLightEffectsV2;
-  powerup: HueLightPowerup;
+  effects?: HueEffects;
+  effects_v2?: HueEffectsV2;
+  timed_effects?: HueTimedEffects;
+  powerup?: HuePowerUp;
   type: 'light';
 };
 
 /**
- * The top-level response from the Hue API
+ * Top Level Response Envelope
  */
 export type HueApiResponse = {
-  errors: unknown[]; // Use 'any[]' or a specific error type if known
+  errors: any[];
   data: HueLight[];
 };
 
 /**
- * Defines the product-specific data for a Hue device.
+ * Payload for updating a light via PUT /clip/v2/resource/light/{id}
  */
-export type HueProductData = {
-  model_id: string;
-  manufacturer_name: string;
-  product_name: string;
-  product_archetype: string;
-  certified: boolean;
-  software_version: string;
-  hardware_platform_type?: string; // Optional, not present on all devices
-};
-
-/**
- * Defines the user-configurable metadata for a Hue device.
- */
-export type HueMetadata = {
-  name: string;
-  archetype: string;
-};
-
-/**
- * Represents a single service provided by a Hue device (e.g., button, light, motion).
- */
-export type HueService = {
-  rid: string;
-  rtype: string;
-};
-
-/**
- * Represents the user test status, typically for sensors.
- */
-export type HueUserTest = {
-  status: string;
-  usertest: boolean;
-};
-
-/**
- * Represents a single Hue device, which can be a light, sensor, switch, or bridge.
- */
-export type HueDevice = {
-  id: string;
-  id_v1?: string; // Optional, not present on the bridge itself
-  product_data: HueProductData;
-  metadata: HueMetadata;
-  services: HueService[];
-  type: 'device';
-  identify?: Record<string, never>; // Empty object, optional
-  usertest?: HueUserTest; // Optional, only present on some sensors
-};
-
-/**
- * The top-level API response containing a list of Hue devices.
- */
-export type HueDeviceApiResponse = {
-  errors: unknown[]; // Use 'any[]' or a specific error type if known
-  data: HueDevice[];
+export type HueLightUpdatePayload = {
+  on?: {
+    on: boolean;
+  };
+  dimming?: {
+    brightness: number; // 0.0 to 100.0
+  };
+  color_temperature?: {
+    mirek: number; // Typically 153 to 500
+  };
+  color?: {
+    xy: {
+      x: number;
+      y: number;
+    };
+  };
+  dynamics?: {
+    duration?: number; // Transition time in milliseconds
+    speed?: number; // 0.0 to 100.0
+  };
+  alert?: {
+    action: 'breathe';
+  };
 };
