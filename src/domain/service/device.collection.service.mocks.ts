@@ -4,7 +4,7 @@ import { CommandCollection } from '../model/command.collection.model';
 import { CommandRepository } from 'src/port/out/persistence/command.repository';
 import { Device } from '../model/device.model';
 import { Command } from '../model/command.model';
-import { OnModuleDestroy, OnModuleInit } from '@nestjs/common';
+import { OnModuleInit } from '@nestjs/common';
 
 export class DeviceRepositoryMock implements DeviceRepository {
   onModuleInit() {}

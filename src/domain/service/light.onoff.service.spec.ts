@@ -3,7 +3,6 @@ import { ConfigModule } from '@nestjs/config';
 import { LightOnOffService } from './light.onoff.service';
 import { LightsPort } from 'src/port/out/lights/lights.port';
 import { OnOffCommand } from '../model/state.commands';
-import { LightState } from 'src/adapter/out/hue/hue.model';
 import { DeviceRepository } from 'src/port/out/persistence/device.repository';
 import { CommandRepository } from 'src/port/out/persistence/command.repository';
 import { CommandDeviceCollection } from '../model/commanddevice.collection.model';
