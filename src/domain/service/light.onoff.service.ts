@@ -20,6 +20,7 @@ export class LightOnOffService implements LightOnOffUseCase {
 
   @OnEvent('midi.command')
   handleUserCreatedEvent(payload: MidiMessage) {
+    console.log('About to handle event: ', payload);
     this.execute({ buttonId: payload.command }).catch((err) =>
       console.error(err),
     );

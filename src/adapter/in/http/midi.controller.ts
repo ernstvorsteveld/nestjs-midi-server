@@ -13,14 +13,16 @@ export class MidiController {
   @Post('midi')
   @HttpCode(202)
   midi(@Body() midiMessage: MidiMessageDto) {
+    console.log('Received request: ', midiMessage);
     this.eventEmitter.emit('midi.command', Mapper.toDomain(midiMessage));
   }
 }
 
 class Mapper {
   static toDomain(midiMessageDto: MidiMessageDto): MidiMessage {
+    const id: string = midiMessageDto.buttonId;
     return {
-      command: midiMessageDto.buttonId,
+      command: id,
       channel: 0,
       note: 0,
       velocity: 0,
