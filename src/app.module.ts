@@ -12,11 +12,8 @@ import { CommandRepositoryLocal } from './adapter/out/persistence/command/comman
 import { CommandRepository } from './port/out/persistence/command.repository';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { MidiController } from './adapter/in/http/midi.controller';
-import {
-  MidiDecoder,
-  MidiService0,
-  MidiService1,
-} from './adapter/in/midi/midi.service';
+import { MidiDecoder } from './adapter/in/midi/midi.decoder';
+import { MidiService } from './adapter/in/midi/midi.service';
 
 @Module({
   imports: [
@@ -34,8 +31,7 @@ import {
     { provide: LightsPort, useClass: LightsFacadeHue },
     { provide: CommandRepository, useClass: CommandRepositoryLocal },
     MidiDecoder,
-    MidiService0,
-    MidiService1,
+    MidiService,
   ],
 })
 export class AppModule {}

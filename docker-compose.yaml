@@ -4,6 +4,10 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: nestjs-midi-server
+    devices:
+      - '/dev/snd:/dev/snd'
+    group_add:
+      - audio
     ports:
       - '3010:3000'
     environment:

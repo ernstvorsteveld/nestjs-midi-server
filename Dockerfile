@@ -27,6 +27,7 @@ FROM node:23-slim
 WORKDIR /usr/src/app
 RUN apt-get update && apt-get install -y \
     libasound2 \
+    build-essential \
     && rm -rf /var/lib/apt/lists/*
 COPY --from=builder /usr/src/app/dist ./dist
 COPY --from=builder /usr/src/app/node_modules ./node_modules
