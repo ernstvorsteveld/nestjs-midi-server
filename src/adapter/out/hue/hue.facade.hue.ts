@@ -47,6 +47,7 @@ export class LightsFacadeHue implements LightsPort {
 
   async getState(id: string): Promise<LightState> {
     const uri = `${this.configurationService.hueHost()}/clip/v2/resource/light/${id}`;
+    console.error(uri);
     const response = await axios.get(uri, this.config);
     if (response === undefined || response.status !== 200) {
       return LightState.OFF;

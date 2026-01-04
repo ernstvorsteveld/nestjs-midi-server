@@ -20,6 +20,7 @@ export class CommandDeviceCollection {
         DeviceCollection.get(),
         CommandCollection.get(),
       );
+      console.error(CommandDeviceCollection.get());
     }
 
     return CommandDeviceCollection.INSTANCE;

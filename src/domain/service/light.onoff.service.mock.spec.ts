@@ -3,30 +3,29 @@ import { ConfigModule } from '@nestjs/config';
 import { LightOnOffService } from './light.onoff.service';
 import { LightsPort } from 'src/port/out/lights/lights.port';
 import { OnOffCommand } from '../model/state.commands';
+import { LightsFacadeMock } from 'src/adapter/out/hue/hue.facade.mock';
+import { Device } from '../model/device.model';
 import { LightState } from 'src/adapter/out/hue/hue.model';
 import { DeviceRepository } from 'src/port/out/persistence/device.repository';
 import { CommandRepository } from 'src/port/out/persistence/command.repository';
 import { CommandDeviceCollection } from '../model/commanddevice.collection.model';
+import {
+  CommandRepositoryMock,
+  DeviceRepositoryMock,
+} from './device.collection.service.mocks';
 import { EventEmitterModule } from '@nestjs/event-emitter';
-import { DeviceRepositoryLocal } from 'src/adapter/out/persistence/device/device.repository.local';
-import { CommandRepositoryLocal } from 'src/adapter/out/persistence/command/command.repository.local';
-import { LightsFacadeHue } from 'src/adapter/out/hue/hue.facade.hue';
-import { ConfigurationService } from 'src/util/config.service';
-import { ConfigurationServiceImpl } from 'src/util/config.service.impl';
 
 describe('LightOnOffService', () => {
   let service: LightOnOffService;
-  let lightsPort: LightsPort;
-  let deviceRepository: DeviceRepository;
-  let commandRepository: CommandRepository;
+  let mock: LightsPort;
+  let repository: DeviceRepository;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        { provide: ConfigurationService, useClass: ConfigurationServiceImpl },
-        { provide: DeviceRepository, useClass: DeviceRepositoryLocal },
-        { provide: CommandRepository, useClass: CommandRepositoryLocal },
-        { provide: LightsPort, useClass: LightsFacadeHue },
+        { provide: DeviceRepository, useClass: DeviceRepositoryMock },
+        { provide: CommandRepository, useClass: CommandRepositoryMock },
+        { provide: LightsPort, useClass: LightsFacadeMock },
         LightOnOffService,
       ],
       imports: [
@@ -38,28 +37,29 @@ describe('LightOnOffService', () => {
     }).compile();
 
     service = module.get<LightOnOffService>(LightOnOffService);
-    lightsPort = module.get<LightsPort>(LightsPort);
-    deviceRepository = module.get<DeviceRepository>(DeviceRepository);
-    commandRepository = module.get<CommandRepository>(CommandRepository);
+    mock = module.get<LightsPort>(LightsPort);
+    repository = module.get<DeviceRepository>(DeviceRepository);
 
-    await deviceRepository.onModuleInit();
-    commandRepository.onModuleInit();
+    await repository.onModuleInit();
   });
 
   it('should be defined', () => {
     expect(service).toBeDefined();
-    expect(lightsPort).toBeDefined();
-    expect(deviceRepository).toBeDefined();
+    expect(mock).toBeDefined();
+    expect(repository).toBeDefined();
   });
 
   it('Should hava a objects in CommandDeviceCollection', () => {
-    expect(CommandDeviceCollection.get().get()).toHaveLength(23);
+    expect(CommandDeviceCollection.get().get()).toHaveLength(3);
   });
 
   it('Should select correct device based upon command', async () => {
     const onOffCommand: OnOffCommand = {
-      buttonId: '64',
+      buttonId: '3',
     };
+    (mock as LightsFacadeMock).setLightState(LightState.ON);
     await service.execute(onOffCommand);
+    const device: Device = (mock as LightsFacadeMock).getCalledWith();
+    expect(device.deviceId).toBe('3');
   });
 });

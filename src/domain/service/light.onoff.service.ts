@@ -29,6 +29,7 @@ export class LightOnOffService implements LightOnOffUseCase {
     const commandDevice = CommandDeviceCollection.get().getDeviceForCommand(
       command.buttonId,
     );
+    console.error(commandDevice);
     if (commandDevice === undefined) {
       console.info(`Device not found for command ${command.buttonId}`);
     } else {

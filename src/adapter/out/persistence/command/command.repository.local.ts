@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, OnModuleInit } from '@nestjs/common';
 import { CommandRepository } from 'src/port/out/persistence/command.repository';
 import { CommandCollection } from 'src/domain/model/command.collection.model';
 import { CommandCollectionDto } from './command.model';
@@ -7,10 +7,13 @@ import { AbstractCommandRepositoryLocal } from './command.repository.abstract.lo
 @Injectable()
 export class CommandRepositoryLocal
   extends AbstractCommandRepositoryLocal
-  implements CommandRepository
+  implements CommandRepository, OnModuleInit
 {
   constructor() {
     super();
+  }
+
+  onModuleInit() {
     const commandsCollection: CommandCollectionDto = this.loadCommands();
     new CommandCollection(
       commandsCollection.commands.map((d) => ({
