@@ -59,7 +59,6 @@ export class CommandDeviceCollection {
   }
 
   public getDeviceForCommand(id: string): CommandDevice {
-    console.log('Have commandDevices: ', this.commandDevices);
     console.log('About to find Device for command id: ', id);
     const commandDevice = this.commandDevices.find((dc) => dc.commandId === id);
     if (commandDevice === undefined) {

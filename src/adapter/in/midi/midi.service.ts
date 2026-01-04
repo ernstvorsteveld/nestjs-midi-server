@@ -84,8 +84,10 @@ export class MidiService0 implements OnModuleInit, OnModuleDestroy {
 
     this.midiInput.on('message', (deltaTime, message) => {
       const decodedMessage = this.midiMessageDecoder.decodeMessage(message);
-      this.logger.verbose(`MIDI Message: ${JSON.stringify(decodedMessage)}`);
-      this.eventEmitter.emit('midi.command', decodedMessage);
+      console.log(`0 MIDI Message: ${JSON.stringify(decodedMessage)}`);
+      if (decodedMessage.command === 'noteon') {
+        this.eventEmitter.emit('midi.command', decodedMessage);
+      }
     });
 
     this.midiInput.openPort(0);
@@ -123,8 +125,10 @@ export class MidiService1 implements OnModuleInit, OnModuleDestroy {
 
     this.midiInput.on('message', (deltaTime, message) => {
       const decodedMessage = this.midiMessageDecoder.decodeMessage(message);
-      this.logger.verbose(`MIDI Message: ${JSON.stringify(decodedMessage)}`);
-      this.eventEmitter.emit('midi.command', decodedMessage);
+      console.log(`1 MIDI Message: ${JSON.stringify(decodedMessage)}`);
+      if (decodedMessage.command === 'noteon') {
+        this.eventEmitter.emit('midi.command', decodedMessage);
+      }
     });
 
     this.midiInput.openPort(1);

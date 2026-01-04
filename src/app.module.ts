@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { LightOnOffService } from './domain/service/light.onoff.service';
 import { LightOnOffUseCase } from './port/in/light.usecase';
@@ -13,6 +12,11 @@ import { CommandRepositoryLocal } from './adapter/out/persistence/command/comman
 import { CommandRepository } from './port/out/persistence/command.repository';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { MidiController } from './adapter/in/http/midi.controller';
+import {
+  MidiDecoder,
+  MidiService0,
+  MidiService1,
+} from './adapter/in/midi/midi.service';
 
 @Module({
   imports: [
@@ -24,12 +28,14 @@ import { MidiController } from './adapter/in/http/midi.controller';
   controllers: [MidiController],
   providers: [
     { provide: ConfigurationService, useClass: ConfigurationServiceImpl },
-    AppService,
     { provide: LightOnOffUseCase, useClass: LightOnOffService },
     { provide: DeviceRepository, useClass: DeviceRepositoryLocal },
     LightOnOffService,
     { provide: LightsPort, useClass: LightsFacadeHue },
     { provide: CommandRepository, useClass: CommandRepositoryLocal },
+    MidiDecoder,
+    MidiService0,
+    MidiService1,
   ],
 })
 export class AppModule {}
