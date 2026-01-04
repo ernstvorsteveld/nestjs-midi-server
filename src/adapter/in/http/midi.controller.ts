@@ -10,7 +10,7 @@ export class MidiMessageDto {
 export class MidiController {
   constructor(@Inject() private eventEmitter: EventEmitter2) {}
 
-  @Post('midi')
+  @Post('midi/flip')
   @HttpCode(202)
   midi(@Body() midiMessage: MidiMessageDto) {
     console.log('Received request: ', midiMessage);
