@@ -13,6 +13,7 @@ import {
   CommandRepositoryMock,
   DeviceRepositoryMock,
 } from './device.collection.service.mocks';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 describe('LightOnOffService', () => {
   let service: LightOnOffService;
@@ -31,6 +32,7 @@ describe('LightOnOffService', () => {
         ConfigModule.forRoot({
           isGlobal: true,
         }),
+        EventEmitterModule.forRoot(),
       ],
     }).compile();
 

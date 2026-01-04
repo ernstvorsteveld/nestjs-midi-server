@@ -15,6 +15,7 @@ COPY package*.json ./
 COPY tsconfig*.json ./
 COPY nest-cli.json ./
 COPY .device_info ./.device_info
+COPY .env ./.env
 
 RUN npm install
 COPY . .
@@ -31,6 +32,8 @@ COPY --from=builder /usr/src/app/dist ./dist
 COPY --from=builder /usr/src/app/node_modules ./node_modules
 COPY --from=builder /usr/src/app/package*.json ./
 COPY --from=builder /usr/src/app/.device_info ./.device_info
+COPY --from=builder /usr/src/app/.env ./.env
+
 EXPOSE 3000
 
 CMD ["npm", "run", "start:prod"]
