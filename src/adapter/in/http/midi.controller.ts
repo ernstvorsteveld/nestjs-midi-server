@@ -24,7 +24,7 @@ class Mapper {
     return {
       command: id,
       channel: 0,
-      note: 0,
+      note: Number(id),
       velocity: 0,
       raw: [],
     };
