@@ -1,0 +1,14 @@
+== Local docker registray and Certificates
+
+=== Create a certificate
+
+[source,bash]
+----
+mkdir .certs
+
+
+openssl req -x509 -newkey rsa:4096 -sha256 -days 365 -nodes \
+  -keyout certs/my-registry.local.key -out certs/my-registry.local.crt \
+  -subj "/CN=my-registry.local" \
+  -addext "subjectAltName=DNS:my-registry.local,IP:127.0.0.1"
+----
