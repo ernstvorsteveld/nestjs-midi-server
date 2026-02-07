@@ -1,0 +1,121 @@
+== Midi to light
+
+[cols="1,1,1,1,1,1,1,1", options="header"]
+|===
+| 1
+| 2
+| 3
+| 4
+| 5
+| 6
+| 7
+| 8
+
+a| 64
+
+Kleine lamp eiland
+a| 65
+
+Eettafellamp
+a| 66
+
+Kleine Lotek
+a| 67
+
+Grote Lotek
+a| 96
+
+Schaar
+a| 97
+
+Bal vensterbank
+a| 98
+
+Klein lampje
+a| 99
+a| 60
+
+Bolletje keuken
+a| 61
+
+Spots keuken
+a| 62
+
+Ganglamp keuken
+a| 63
+
+Hoge plank keuken
+a| 92
+
+Lage plank keuken
+a| 93
+a| 94
+a| 95
+
+a| 56
+
+Stand lamp 1
+a| 57
+
+Stand lamp 2
+a| 58
+
+Stand lamp 3
+a| 59
+a| 88
+a| 89
+a| 90
+a| 91
+
+a| 52
+a| 53
+a| 54
+a| 55
+a| 84
+a| 85
+a| 86
+a| 87
+
+a| 48
+a| 49
+a| 50
+a| 51
+a| 80
+a| 81
+a| 82
+a| 83
+
+a| 44
+a| 45
+a| 46
+a| 47
+a| 76
+a| 77
+a| 78
+a| 79
+
+a| 40
+a| 41
+a| 42
+a| 43
+a| 72
+a| 73
+a| 74
+a| 75
+
+a| 36
+
+Actieve lamp
+Lichter
+a| 37
+
+Actieve lamp
+Donkerder
+a| 38
+a| 39
+a| 68
+a| 69
+a| 70
+a| 71
+
+|===

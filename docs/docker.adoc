@@ -1,0 +1,17 @@
+== Docker commands
+
+[source,bash]
+----
+docker build -t nestjs-midi-server .
+
+docker compose pull
+
+docker tag nestjs-midi-server:latest ernstvorsteveld/nestjs-midi-server:latest
+docker push ernstvorsteveld/nestjs-midi-server:latest
+----
+
+[source,bash]
+----
+/etc/systemd/system/docker.midi.service
+/etc/systemd/system/midi.sh
+----
