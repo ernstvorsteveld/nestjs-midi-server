@@ -49,9 +49,14 @@ a| 92
 
 Lage plank keuken
 a| 93
+
+Keuken Eiland rechts
 a| 94
+
+Keuken Eiland midden
 a| 95
 
+Keuken Eiland links
 a| 56
 
 Stand lamp 1
