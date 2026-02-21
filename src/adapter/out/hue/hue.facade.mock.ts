@@ -1,10 +1,13 @@
 import { Device } from 'src/domain/model/device.model';
 import { LightsPort } from 'src/port/out/lights/lights.port';
-import { LightState } from './hue.model';
+import { Light, LightState } from './hue.model';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class LightsFacadeMock implements LightsPort {
+  brightness(device: Device): Promise<Light> {
+    throw new Error('Method not implemented:' + device.deviceId);
+  }
   private devices: Device[] = <Device[]>[];
   private state: LightState;
 
